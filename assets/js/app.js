@@ -20,29 +20,7 @@ $(document).ready(function(){
             icon: './assets/img/marker-mfua.png'
         });
 
-        // Эфект появления для колонок
-        // var waypoints = [], 
-        //     columns = document.querySelectorAll('.column');
-        // for (var i = 0; i < columns.length; i++ ) {
-        //     waypoints.push(
-        //         new Waypoint({
-        //             element: document.querySelectorAll('.column')[i],
-        //             handler: function(direction) {
-        //                 $(this.element).removeClass('hide')
-        //                 $(this.element).addClass('showFromBack')
-        //             },
-        //             offset: '75%'
-        //         })
-        //     )
-        // };
-        var wayp1 = new Waypoint({
-            element: document.querySelector('.wayp1'),
-            handler: function(direction) {
-                $(this.element).removeClass('hide')
-                $(this.element).addClass('showFromBack')
-            },
-            offset: '75%'
-        });
+        new WOW().init();
 
         // Форма регистрации
         $('.fancybox').fancybox();
