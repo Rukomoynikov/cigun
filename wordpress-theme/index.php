@@ -1,55 +1,84 @@
 <?php get_header(); ?>
-    <div class="jumbotron">
-      <div class="logo"><img src="<?php bloginfo('stylesheet_directory'); ?>/assets/img/mfua-logo.png" alt="Логотип МФЮА"></div>
+    <div class="jumbotron" <? if (get_theme_mod('header_image')) {echo "style='background-image: url(" . get_theme_mod('header_image') . ")'";}; ?> >
+    <? if (get_theme_mod('theme_logo')): ?>
+        <div class="logo">
+            <img src="<?echo get_theme_mod('theme_logo') ?>" alt="Logo">
+        </div>
+    <? endif;?>
       <div class="description">
         <h3><?php bloginfo('name'); ?></h3>
         <p><?php bloginfo('description'); ?></p>
-        <p>*Приходите в любой легкой обуви.</p>
-        <div class="button"><a>22 февраля</a><br><a>11.00-14.00</a></div>
+        <p>
+        * Please come with any comfortable shoes.</p>
+        <div class="button"><a href='#register_block' class="fancybox">22 february</a><br><a>11.00-14.00</a></div>
       </div>
     </div>
+    <!-- Start cigun block -->
     <div class="cigun_block">
       <div class="caption">
-        <h3>Цигун</h3>
+        <h3>Features</h3>
       </div>
       <div class="center">
-        <div class="column wow zoomIn"><img src="<?php bloginfo('stylesheet_directory'); ?>/assets/img/icon_1.png">
-          <h3>Приходите<br>на семинар</h3>
-          <p><span class="date">22 февраля<br>с 11.00 до 14.00</span><br>в зале на 10 этаже корпуса “Калужский” признанный мастер цигуна, даос, целитель<span style="text-decoration:underline"> Чен Хунбин</span> проводит семинар:<br><span class="seminar_name">Цигун Взращивание Жизни</span><br>(Ян-Шен Цигун)</p>
-        </div>
-        <div class="column wow zoomIn"><img src="<?php bloginfo('stylesheet_directory'); ?>/assets/img/icon_2.png">
-          <h3>Что такое<br>цигун</h3>
-          <p>Это инструмент самопознания, это источник жизненной силы и способ поддерживать себя в гармонии и единстве с окружающим миром, это путь высвобождения целительных сил своего организма. Заниматься цигун может любой человек. Специальная подготовка не требуется.</p>
-        </div>
-        <div class="column wow zoomIn"><img src="<?php bloginfo('stylesheet_directory'); ?>/assets/img/icon_3.png">
-          <h3>Откуда<br>пришёл цигун</h3>
-          <p>Формы и принципы Ян Шен Цигун родились в устье реки Янцзы, оттачивались веками многими поколениями мастеров и были бережно собраны мастером Ченом в единую гармоничную систему. Мастер практикует цигун более 40 лет.</p>
-        </div>
+      <?
+    		$args = array( 'post_type' => 'features');
+    		$loop = new WP_Query( $args );
+    		while ( $loop->have_posts() ): 
+          $loop->the_post();
+    		  echo '<div class="column wow zoomIn">';
+          if ( has_post_thumbnail() ) {
+            the_post_thumbnail(array('36', '36'));
+          } else {
+            echo "<img src='" . get_template_directory_uri() . "/assets/img/icon_1.png'"  . 'alt="">';
+          }
+    			the_title('<h3>', '</h3>');
+    			echo "<p>";
+    			the_content();
+    			echo "</p></div>";
+    		endwhile;
+      ?>
       </div>
     </div>
-    <div class="quote_block">
-      <div class="center">
-        <div class="photo"></div>
-        <div class="quote">
-          <blockquote class="wow zoomIn">Энергию Ци нельзя видеть, но её можно почувствовать.<br>Есть видимый путь, есть невидимый — вместе они ведут к высшему Цигуну.
-            <div class="line"></div>
-            <div class="author">Чен Хунбин</div>
-          </blockquote>
-        </div>
-      </div>
-    </div>
+    <!-- End cigun block -->
+
+    <!-- Start citate block -->
+    <?
+      $args = array( 'post_type' => 'citates', 'orderby' => 'rand', 'posts_per_page' => '1');
+      $loop = new WP_Query( $args );
+      while ( $loop->have_posts() ): 
+        echo '<div class="quote_block"><div class="center">';
+        $loop->the_post();
+          echo '<div class="photo">';
+          if ( has_post_thumbnail() ) {
+            the_post_thumbnail();
+          } else {
+            echo "<img src='" . get_template_directory_uri() . "/assets/img/photo1.png'"  . 'alt="">';
+          }
+          echo '</div><div class="quote"><blockquote class="wow zoomIn">';
+          the_content();
+          echo '<div class="line"></div>';
+          the_title('<div class="author">', '</div>');
+        echo "</div></div></div>";
+      endwhile;
+    ?>
+    <!-- End citate block -->
+
     <div class="attention_block">
-      <h4>для студентов, сотрудников и их друзей</h4>
-      <h4>вход свободный</h4>
+      <h4>students, teachers</h4>
+      <h4>Free entrance</h4>
       <div class="line"></div>
     </div>
-    <div id="map"></div>
+    <? if (get_theme_mod('google_map')):?>
+      <div id="map">
+        <?php echo do_shortcode(get_theme_mod('google_map'));?>
+      </div>
+    <? endif; ?>
     <div class="adres">
       <div class="description">
-        <div class="caption">м. Калужская, ул. Введенского, 1А</div>
-        <h4>Как нас найти:</h4>
-        <p>1-й вагон из центра, из стеклянных дверей налево, из перехода направо, пройти за ТЦ “Калужский” к автобусам 642, 642к.</p>
-        <p>Следовать до остановки “1-й автобусный парк”, через дорогу – здание МФЮА. Вход с торца под надписью “Дворец науки”, 10 этаж</p><a href="#register_block" class="button fancybox"><span>22 февраля</span><br><span>11.00-14.00</span></a>
+        <div class="caption">Full adress</div>
+        <h4>Directions:</h4>
+        <p>Direction 1</p>
+        <p>Direction 2</p>
+        <a href="#register_block" class="button fancybox"><span>22 february</span><br><span>11.00-14.00</span></a>
       </div>
     </div>
 <?php get_footer(); ?>
